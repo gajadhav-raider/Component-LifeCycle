@@ -1,0 +1,81 @@
+//Mark.js
+import React, { Component } from 'react'
+export default class Mark extends Component {
+    constructor(props){
+        super(props);
+        this.state ={
+            mroll:this.props.roll
+        }
+    }
+    static getDerivedStateFromProps(props,state)
+    {
+        console.log("Mark- Get Derived from Props")
+        console.log(props,state)
+        if(props.roll !== state.mroll)
+        {
+          return ({mroll:props.roll})
+        }
+        return null;
+    }
+    shouldComponentUpdate(nextProps,nextState){
+        
+        if(this.props.roll<107){
+            console.log(" Mark - shouldComponentUpdate");
+            console.log(nextProps,nextState);
+            return true;
+        }
+        console.log(nextProps,nextState);
+        return false;
+    }
+    getSnapshotBeforeUpdate(prevProps,prevState)
+    {
+     console.log("Mark- GetSnapshotBeforeUpdate -runs Before Update ");
+     console.log(prevProps,prevState);
+     return 45;
+    }
+    componentDidUpdate(prevProps,prevState,snapshot){
+        console.log("Mark - componentDidUpdate - runs After the update");
+        console.log(prevProps,prevState,snapshot);
+
+    }
+    render() {
+        console.log("Marks Render");
+        return (
+            <div>
+                <h1>{this.state.mroll}</h1>
+            </div>
+        )
+    }
+}
+//Student.js
+import React, { Component } from 'react'
+import Mark from './Mark'
+
+export default class Student extends Component {
+    constructor(){
+        super();
+        this.state={
+            roll:101
+        }
+    }
+    clickEvent = ()=>{
+        console.log("Button is Clicked")
+        this.setState({roll:this.state.roll + 2});
+    }
+    render() {
+        console.log(" Student Render Method")
+        return (
+            <div>
+               <Mark roll={this.state.roll}/>            
+               <button onClick={this.clickEvent}>Change Number</button>
+            </div>
+        )
+    }
+}
+
+//index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Student from './Student';
+
+ReactDOM.render(<Student/>,document.getElementById('root'));
